@@ -1,3 +1,4 @@
 pub mod parsing;
-pub mod ast;
-pub mod ir;
+pub mod structures;
+pub mod errors;
+
