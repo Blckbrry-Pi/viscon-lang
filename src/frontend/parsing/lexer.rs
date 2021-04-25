@@ -67,6 +67,9 @@ pub enum Operation {
 pub enum Punctuation {
   Period,
   Commaa,
+  Colonn,
+  DubCol,
+  SemCol,
   LParen,
   RParen,
   LBrack,
@@ -155,8 +158,11 @@ pub enum VisconLexer {
 
 
   
-  #[token(".", |_| Punctuation::Period)]
-  #[token(",", |_| Punctuation::Commaa)]
+  #[token(".",  |_| Punctuation::Period)]
+  #[token(",",  |_| Punctuation::Commaa)]
+  #[token(":",  |_| Punctuation::Colonn)]
+  #[token("::", |_| Punctuation::DubCol)]
+  #[token(";",  |_| Punctuation::SemCol)]
 
   #[token("(", |_| Punctuation::LParen)]
   #[token(")", |_| Punctuation::RParen)]
@@ -204,10 +210,10 @@ pub enum VisconLexer {
 
   #[regex(r#"[0-9]+"#, |lex| lex.slice().parse())]
   InteLiteral(i64),
-  #[regex(r#"[0-9]+u"#, |lex| lex.slice().trim_end_matches("u").parse())]
-  #[regex(r#"0x[0-9A-F]+"#, |lex| i64::from_str_radix(lex.slice().trim_start_matches("0x"), 16))]
-  #[regex(r#"0b[01]+"#, |lex| i64::from_str_radix(lex.slice().trim_start_matches("0b"), 2))]
-  WordLiteral(i64),
+  #[regex(r#"[0-9]+u"#, |lex| lex.slice().trim_end_matches('u').parse())]
+  #[regex(r#"0x[0-9A-F]+"#, |lex| u64::from_str_radix(lex.slice().trim_start_matches("0x"), 16))]
+  #[regex(r#"0b[01]+"#, |lex| u64::from_str_radix(lex.slice().trim_start_matches("0b"), 2))]
+  WordLiteral(u64),
   #[regex(r"[0-9]+(\.[0-9]*([eE][+-]?[0-9]+)?|[eE][+-]?[0-9]+)", |lex| lex.slice().parse())]
   FloatLiteral(f64),
 
